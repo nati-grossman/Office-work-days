@@ -1,33 +1,12 @@
 const date = new Date();
 
-const renderCalendar = () => {
-  date.setDate(1);
+var week = new Array();
 
-  const monthDays = document.querySelector(".days");
+const officeWork = [];
 
-  const lastDay = new Date(
-    date.getFullYear(),
-    date.getMonth() + 1,
-    0
-  ).getDate();
+const dayZero = '2022/01/30'; //'2022/02/13'; 
 
-  const prevLastDay = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    0
-  ).getDate();
-
-  const firstDayIndex = date.getDay();
-
-  const lastDayIndex = new Date(
-    date.getFullYear(),
-    date.getMonth() + 1,
-    0
-  ).getDay();
-
-  const nextDays = 7 - lastDayIndex - 1;
-
-  const months = [
+const months = [
     "January",
     "February",
     "March",
@@ -40,43 +19,117 @@ const renderCalendar = () => {
     "October",
     "November",
     "December",
-  ];
+];
 
-  document.querySelector(".date h1").innerHTML = months[date.getMonth()];
+const weekdays = [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+];
 
-  document.querySelector(".date p").innerHTML = new Date().toDateString();
+const teams = new Map();
+teams.set('Suite', [false, true, false, false, true, false, false, false, true, false, true, true, false, false]);
+teams.set('pro',   [true, false, true, false, false, false, false, true, false, true, true, false, false, false]);
+teams.set('DBA',   [true, true, false, true, false, false, false, true, true, false, false, false, false, false]);
+teams.set('Mobile',[true, true, false, true, false, false, false, true, true, false, false, false, false, false]);
+teams.set('Dror',  [false, false, true, false, true, false, false, false, false, true, true, true, false, false]);
+teams.set('QA',    [false, true, false, false, true, false, false, false, true, false, true, true, false, false]);
+teams.set('Chaya', [false, true, true, true, false, false, false, false, true, true, false, false, false, false]);
+teams.set('Analysis',[true, false, false, false, true, false, false, true, false, false, true, true, false, false]);
+teams.set('Configuration',[false, true, true, true, false, false, false, false, true, true, false, false, false, false]);
 
-  let days = "";
 
-  for (let x = firstDayIndex; x > 0; x--) {
-    days += `<div class="prev-date">${prevLastDay - x + 1}</div>`;
-  }
 
-  for (let i = 1; i <= lastDay; i++) {
-    if (
-      i === new Date().getDate() &&
-      date.getMonth() === new Date().getMonth()
-    ) {
-      days += `<div class="today">${i}</div>`;
-    } else {
-      days += `<div>${i}</div>`;
-    }
-  }
-
-  for (let j = 1; j <= nextDays; j++) {
-    days += `<div class="next-date">${j}</div>`;
-    monthDays.innerHTML = days;
-  }
+const Datediff = (thisDay) => {
+    var thisDay  = thisDay.toISOString().split('T')[0];
+    thisDay = thisDay.split('-').join('/');
+  
+    var day1 = new Date(dayZero);
+    var day2 = new Date(thisDay);
+    
+    return Math.round((day2 - day1)/(1000*60*60*24));
 };
 
-document.querySelector(".prev").addEventListener("click", () => {
-  date.setMonth(date.getMonth() - 1);
-  renderCalendar();
-});
+const AddDate = () => {
+    document.querySelector(".currentDate h1").innerHTML = months[date.getMonth()];
+    document.querySelector(".currentDate p").innerHTML = new Date().toDateString();
+};
 
-document.querySelector(".next").addEventListener("click", () => {
-  date.setMonth(date.getMonth() + 1);
-  renderCalendar();
-});
+const BuildWeek = () => {
+    var current = new Date();
+    current.setDate((current.getDate() - current.getDay()));
+    for (var i = 0; i < 7 ; i++) {
+        week.push(new Date(current)); 
+        current.setDate(current.getDate()+1);
+    }
+};
 
-renderCalendar();
+const BuildNumbersOfWeek = () => { 
+    let days = "";
+
+    for(let i = 0; i < 7 ; i++) {
+        let nameDay = "number-" + weekdays[week[i].getDay()];
+        let numberDay = week[i].getDate(); 
+        days += `<div id="${nameDay}">${numberDay}</div>`;
+    }
+    document.querySelector(".currentDays").innerHTML = days;
+
+};
+
+const AddBorderToCurrentDay = () => {
+    var idOfCurrentDay = '#' + weekdays[new Date().getDay()];
+    document.querySelector(idOfCurrentDay).classList.add("currentDay");
+};
+
+const FocusToTeamsSelect = () => {
+    var elementTeams = document.getElementById("teams");
+    elementTeams.addEventListener('change', (event) => {
+
+        var selectedValue = elementTeams.options[elementTeams.selectedIndex].value;
+        var arrayWorkDaysOffice = teams.get(selectedValue);
+       
+        //remove "officeWork" class
+        for(let i = 0; i < 7 ; i++) {
+            let id = '#number-' + weekdays[i];
+            if(document.querySelector(id) != null)
+                document.querySelector(id).classList.remove("officeWork");
+        }
+    
+        //add "officeWork" class
+        for(let i = 0; i < 7 ; i++) {
+            let day = document.querySelector(".currentDate p").innerHTML;
+            day = day.split(' ')[3];
+
+            let diffDay = Datediff(new Date(week[i]))%14;
+                       
+            if(arrayWorkDaysOffice[diffDay]) {
+                let idNumberDay = '#number-' + weekdays[i];
+                document.querySelector(idNumberDay).classList.add("officeWork");  
+            }    
+        }
+    });
+};
+
+const Calendar = () => {
+    
+    AddDate();
+
+
+    BuildWeek();
+    
+
+    BuildNumbersOfWeek(); 
+    
+
+    AddBorderToCurrentDay();
+    
+
+    FocusToTeamsSelect();
+};
+
+
+Calendar(); 
