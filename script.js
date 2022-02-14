@@ -2,9 +2,7 @@ const date = new Date();
 
 var week = new Array();
 
-const officeWork = [];
-
-const dayZero = '2022/01/30'; //'2022/02/13'; 
+const dayZero = '2022/01/30'; 
 
 const months = [
     "January",
@@ -62,7 +60,7 @@ const AddDate = () => {
 const BuildWeek = () => {
     var current = new Date();
     current.setDate((current.getDate() - current.getDay()));
-    for (var i = 0; i < 7 ; i++) {
+    for (var i = 0; i < 14 ; i++) {
         week.push(new Date(current)); 
         current.setDate(current.getDate()+1);
     }
@@ -71,17 +69,17 @@ const BuildWeek = () => {
 const BuildNumbersOfWeek = () => { 
     let days = "";
 
-    for(let i = 0; i < 7 ; i++) {
-        let nameDay = "number-" + weekdays[week[i].getDay()];
+    for(let i = 0; i < 14 ; i++) {
+        let nameDay = "num-" + week[i].toISOString().split('T')[0];
         let numberDay = week[i].getDate(); 
         days += `<div id="${nameDay}">${numberDay}</div>`;
     }
-    document.querySelector(".currentDays").innerHTML = days;
 
+    document.querySelector(".currentDays").innerHTML = days;
 };
 
 const AddBorderToCurrentDay = () => {
-    var idOfCurrentDay = '#' + weekdays[new Date().getDay()];
+    var idOfCurrentDay = "#num-" + week[new Date().getDay()].toISOString().split('T')[0];
     document.querySelector(idOfCurrentDay).classList.add("currentDay");
 };
 
@@ -93,22 +91,23 @@ const FocusToTeamsSelect = () => {
         var arrayWorkDaysOffice = teams.get(selectedValue);
        
         //remove "officeWork" class
-        for(let i = 0; i < 7 ; i++) {
-            let id = '#number-' + weekdays[i];
+        for(let i = 0; i < 14 ; i++) {
+            let id = "#num-" + week[i].toISOString().split('T')[0];
             if(document.querySelector(id) != null)
                 document.querySelector(id).classList.remove("officeWork");
         }
     
         //add "officeWork" class
-        for(let i = 0; i < 7 ; i++) {
+        for(let i = 0; i < 14 ; i++) {
             let day = document.querySelector(".currentDate p").innerHTML;
             day = day.split(' ')[3];
 
             let diffDay = Datediff(new Date(week[i]))%14;
                        
             if(arrayWorkDaysOffice[diffDay]) {
-                let idNumberDay = '#number-' + weekdays[i];
-                document.querySelector(idNumberDay).classList.add("officeWork");  
+                let idNumberDay = "#num-" + week[i].toISOString().split('T')[0];
+                if(document.querySelector(idNumberDay) != null)
+                    document.querySelector(idNumberDay).classList.add("officeWork");  
             }    
         }
     });
