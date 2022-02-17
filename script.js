@@ -49,7 +49,7 @@ const Datediff = (thisDay) => {
     var day1 = new Date(dayZero);
     var day2 = new Date(thisDay);
     
-    return Math.round((day2 - day1)/(1000*60*60*24));
+    return Math.round(Math.abs(day2 - day1)/(1000*60*60*24));
 };
 
 const AddDate = () => {
@@ -69,13 +69,22 @@ const BuildWeek = () => {
 const BuildNumbersOfWeek = () => { 
     let days = "";
 
-    for(let i = 0; i < 14 ; i++) {
+    for(let i = 0; i < 7 ; i++) {
         let nameDay = "num-" + week[i].toISOString().split('T')[0];
         let numberDay = week[i].getDate(); 
         days += `<div id="${nameDay}">${numberDay}</div>`;
     }
 
-    document.querySelector(".currentDays").innerHTML = days;
+    document.querySelector("#firstWeek").innerHTML = days;
+
+    days = "";
+    for(let i = 7; i < 14 ; i++) {
+        let nameDay = "num-" + week[i].toISOString().split('T')[0];
+        let numberDay = week[i].getDate(); 
+        days += `<div id="${nameDay}">${numberDay}</div>`;
+    }
+
+    document.querySelector("#secondWeek").innerHTML = days;
 };
 
 const AddBorderToCurrentDay = () => {
@@ -102,8 +111,8 @@ const FocusToTeamsSelect = () => {
             let day = document.querySelector(".currentDate p").innerHTML;
             day = day.split(' ')[3];
 
-            let diffDay = Datediff(new Date(week[i]))%14;
-                       
+            let diffDay = Datediff(new Date(week[i]))%14 + 1;
+              console.log(diffDay);         
             if(arrayWorkDaysOffice[diffDay]) {
                 let idNumberDay = "#num-" + week[i].toISOString().split('T')[0];
                 if(document.querySelector(idNumberDay) != null)
