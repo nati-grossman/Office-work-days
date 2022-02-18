@@ -30,27 +30,28 @@ const weekdays = [
 ];
 
 const teams = new Map();
-teams.set('Suite', [false, true, false, false, true, false, false, false, true, false, true, true, false, false]);
-teams.set('pro',   [true, false, true, false, false, false, false, true, false, true, true, false, false, false]);
-teams.set('DBA',   [true, true, false, true, false, false, false, true, true, false, false, false, false, false]);
-teams.set('Mobile',[true, true, false, true, false, false, false, true, true, false, false, false, false, false]);
-teams.set('Dror',  [false, false, true, false, true, false, false, false, false, true, true, true, false, false]);
-teams.set('QA',    [false, true, false, false, true, false, false, false, true, false, true, true, false, false]);
-teams.set('Chaya', [false, true, true, true, false, false, false, false, true, true, false, false, false, false]);
-teams.set('Analysis',[true, false, false, false, true, false, false, true, false, false, true, true, false, false]);
+teams.set('Suite',        [false, true, false, false, true, false, false, false, true, false, true, true, false, false]);
+teams.set('pro',          [true, false, true, false, false, false, false, true, false, true, true, false, false, false]);
+teams.set('DBA',          [true, true, false, true, false, false, false, true, true, false, false, false, false, false]);
+teams.set('Mobile',       [true, true, false, true, false, false, false, true, true, false, false, false, false, false]);
+teams.set('Dror',         [false, false, true, false, true, false, false, false, false, true, true, true, false, false]);
+teams.set('QA',           [false, true, false, false, true, false, false, false, true, false, true, true, false, false]);
+teams.set('Chaya',        [false, true, true, true, false, false, false, false, true, true, false, false, false, false]);
+teams.set('Analysis',     [true, false, false, false, true, false, false, true, false, false, true, true, false, false]);
 teams.set('Configuration',[false, true, true, true, false, false, false, false, true, true, false, false, false, false]);
 
 
 
+//Math.round() method round off number passed as parameter to its nearest integer so as to get lower value.
+//Math.ceil()  method round off number passed as parameter to its nearest integer so as to get greater value.
 const Datediff = (thisDay) => {
-    var thisDay  = thisDay.toISOString().split('T')[0];
-    thisDay = thisDay.split('-').join('/');
-  
     var day1 = new Date(dayZero);
-    var day2 = new Date(thisDay);
+    var day2 = new Date(thisDay.getFullYear(), thisDay.getMonth(), thisDay.getDate());
     
     return Math.round(Math.abs(day2 - day1)/(1000*60*60*24));
+    //return Math.ceil(Math.abs(day2 - day1)/(1000*60*60*24));
 };
+
 
 const AddDate = () => {
     document.querySelector(".currentDate h1").innerHTML = months[date.getMonth()];
@@ -108,11 +109,7 @@ const FocusToTeamsSelect = () => {
     
         //add "officeWork" class
         for(let i = 0; i < 14 ; i++) {
-            let day = document.querySelector(".currentDate p").innerHTML;
-            day = day.split(' ')[3];
-
-            let diffDay = Datediff(new Date(week[i]))%14 + 1;
-              console.log(diffDay);         
+            let diffDay = (Datediff(new Date(week[i])))%14;        
             if(arrayWorkDaysOffice[diffDay]) {
                 let idNumberDay = "#num-" + week[i].toISOString().split('T')[0];
                 if(document.querySelector(idNumberDay) != null)
