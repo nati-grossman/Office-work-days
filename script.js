@@ -34,9 +34,9 @@ teams.set('Suite',        [false, true, false, false, true, false, false, false,
 teams.set('pro',          [true, false, true, false, false, false, false, true, false, true, true, false, false, false]);
 teams.set('DBA',          [true, true, false, true, false, false, false, true, true, false, false, false, false, false]);
 teams.set('Mobile',       [true, true, false, true, false, false, false, true, true, false, false, false, false, false]);
-teams.set('Dror',         [false, false, true, false, true, false, false, false, false, true, true, true, false, false]);
+teams.set('D',         [false, false, true, false, true, false, false, false, false, true, true, true, false, false]);
 teams.set('QA',           [false, true, false, false, true, false, false, false, true, false, true, true, false, false]);
-teams.set('Chaya',        [false, true, true, true, false, false, false, false, true, true, false, false, false, false]);
+teams.set('H',        [false, true, true, true, false, false, false, false, true, true, false, false, false, false]);
 teams.set('Analysis',     [true, false, false, false, true, false, false, true, false, false, true, true, false, false]);
 teams.set('Configuration',[false, true, true, true, false, false, false, false, true, true, false, false, false, false]);
 
@@ -49,6 +49,7 @@ const Datediff = (thisDay) => {
     var day2 = new Date(thisDay.getFullYear(), thisDay.getMonth(), thisDay.getDate());
     
     return Math.round(Math.abs(day2 - day1)/(1000*60*60*24));
+    //return Math.round(Math.abs(day2 - day1));
     //return Math.ceil(Math.abs(day2 - day1)/(1000*60*60*24));
 };
 
