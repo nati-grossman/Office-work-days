@@ -30,15 +30,15 @@ const weekdays = [
 ];
 
 const teams = new Map();
-teams.set('Suite',        [false, true, false, false, true, false, false, false, true, false, true, true, false, false]);
-teams.set('pro',          [true, false, true, false, false, false, false, true, false, true, true, false, false, false]);
-teams.set('DBA',          [true, true, false, true, false, false, false, true, true, false, false, false, false, false]);
-teams.set('Mobile',       [true, true, false, true, false, false, false, true, true, false, false, false, false, false]);
-teams.set('D',         [false, false, true, false, true, false, false, false, false, true, true, true, false, false]);
-teams.set('QA',           [false, true, false, false, true, false, false, false, true, false, true, true, false, false]);
-teams.set('H',        [false, true, true, true, false, false, false, false, true, true, false, false, false, false]);
-teams.set('Analysis',     [true, false, false, false, true, false, false, true, false, false, true, true, false, false]);
-teams.set('Configuration',[false, true, true, true, false, false, false, false, true, true, false, false, false, false]);
+teams.set('B',        [false, true, false, false, true, false, false, false, true, false, true, true, false, false]);
+teams.set('C',          [true, false, true, false, false, false, false, true, false, true, true, false, false, false]);
+teams.set('D',          [true, true, false, true, false, false, false, true, true, false, false, false, false, false]);
+teams.set('E',       [true, true, false, true, false, false, false, true, true, false, false, false, false, false]);
+teams.set('A',         [false, false, true, false, true, false, false, false, false, true, true, true, false, false]);
+teams.set('F',           [false, true, false, false, true, false, false, false, true, false, true, true, false, false]);
+teams.set('G',        [false, true, true, true, false, false, false, false, true, true, false, false, false, false]);
+teams.set('H',     [true, false, false, false, true, false, false, true, false, false, true, true, false, false]);
+teams.set('I',[false, true, true, true, false, false, false, false, true, true, false, false, false, false]);
 
 
 
