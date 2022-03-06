@@ -91,6 +91,12 @@
         background-color: #8dc63f;
     } 
     
+
+    /*specialDays*/
+    .specialDays {
+        background-color: #bd58f3;
+    }
+
     
     .currentDay {
         border: 3px solid #ee3124;
@@ -121,6 +127,14 @@
         height: 10px;
         background-color: #ee3124;
     }
+
+    .squareSpecialDays {
+        padding: 5px;
+        width: 5px;
+        height: 10px;
+        background-color: #bd58f3;
+    }
+
    
     .explanation {
         font-size:1.2rem;

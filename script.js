@@ -2,6 +2,17 @@ const date = new Date();
 
 var week = new Array();
 
+var arraySpecialDays = [];
+// ימי דממה בעבודה
+arraySpecialDays.push("2022-09-14");
+arraySpecialDays.push("2022-09-15");
+arraySpecialDays.push("2022-09-16");
+arraySpecialDays.push("2022-09-17");
+arraySpecialDays.push("2022-09-18");
+arraySpecialDays.push("2022-09-19");
+arraySpecialDays.push("2022-09-20");
+arraySpecialDays.push("2022-09-21");
+
 const dayZero = '2022/01/30'; 
 
 const months = [
@@ -49,7 +60,6 @@ const Datediff = (thisDay) => {
     var day2 = new Date(thisDay.getFullYear(), thisDay.getMonth(), thisDay.getDate());
     
     return Math.round(Math.abs(day2 - day1)/(1000*60*60*24));
-    //return Math.round(Math.abs(day2 - day1));
     //return Math.ceil(Math.abs(day2 - day1)/(1000*60*60*24));
 };
 
@@ -104,21 +114,49 @@ const FocusToTeamsSelect = () => {
         //remove "officeWork" class
         for(let i = 0; i < 14 ; i++) {
             let id = "#num-" + week[i].toISOString().split('T')[0];
-            if(document.querySelector(id) != null)
+            if(document.querySelector(id) != null) {
                 document.querySelector(id).classList.remove("officeWork");
+                document.querySelector(id).classList.remove("specialDays");
+            }
         }
     
         //add "officeWork" class
         for(let i = 0; i < 14 ; i++) {
-            let diffDay = (Datediff(new Date(week[i])))%14;        
+            let diffDay = (Datediff(new Date(week[i])))%14;  
+            let idNumberDay = "#num-" + week[i].toISOString().split('T')[0];      
             if(arrayWorkDaysOffice[diffDay]) {
-                let idNumberDay = "#num-" + week[i].toISOString().split('T')[0];
-                if(document.querySelector(idNumberDay) != null)
-                    document.querySelector(idNumberDay).classList.add("officeWork");  
-            }    
+                if(document.querySelector(idNumberDay) != null &&
+                !arraySpecialDays.includes(week[i].toISOString().split('T')[0])) {
+                    document.querySelector(idNumberDay).classList.add("officeWork");
+                }  
+            }  
+            if(arraySpecialDays.includes(week[i].toISOString().split('T')[0])) {
+                document.querySelector(idNumberDay).classList.add("specialDays");
+            }  
         }
     });
 };
+
+
+const SpecialDays = () => {  
+
+    let currentMonth = new Date().getMonth()+1;
+
+    fetch(`https://www.hebcal.com/hebcal?v=1&cfg=json&min=on&maj=on&i=on&mod=on&year=2022&month=${currentMonth}&geonameid=281184`)
+    .then(response => response.json())
+    .then(result => {
+        let length = result["items"].length;
+        for(let i=0; i<length; i++) 
+        {
+            let category = result["items"][i]["category"];
+            if(category == "holiday") {
+                arraySpecialDays.push(result["items"][i]["date"]);
+            }
+        }
+        //arraySpecialDays.forEach(value => console.log(value));     
+    }).catch(error => console.log('error', error));
+}
+
 
 const Calendar = () => {
     
@@ -133,6 +171,9 @@ const Calendar = () => {
 
     AddBorderToCurrentDay();
     
+
+    SpecialDays();
+
 
     FocusToTeamsSelect();
 };
